@@ -112,6 +112,7 @@ RSpec.describe GameManager, type: :model do
       it 'returns one result' do
         expect(results.size).to eq(1)
         expect(result[:username]).to eq(username)
+        expect(result[:completed]).to eq(false)
         expect(result[:score]).to eq(6)
       end
 
@@ -220,16 +221,18 @@ RSpec.describe GameManager, type: :model do
 
       it 'returns 300 score' do
         expect(result[:score]).to eq(300)
+        expect(result[:completed]).to eq(true)
       end
     end
 
     context 'when all rolls miss' do
       before do
-        12.times { add_roll(0) }
+        20.times { add_roll(0) }
       end
 
       it 'returns 0 score' do
         expect(result[:score]).to eq(0)
+        expect(result[:completed]).to eq(true)
       end
     end
 
@@ -240,6 +243,7 @@ RSpec.describe GameManager, type: :model do
 
       it 'returns 193 score' do
         expect(result[:score]).to eq(193)
+        expect(result[:completed]).to eq(true)
       end
     end
 
