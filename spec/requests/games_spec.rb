@@ -50,10 +50,12 @@ RSpec.describe 'Games API', type: :request do
 
   describe 'POST/games' do
     context 'when the request is valid' do
-      before { post '/games', params: { name: 'First Game' } }
+      let(:params) { { name: 'First Game', usernames: ['user1', 'user2'] } }
+      before { post '/games', params: params}
 
       it 'returns a game' do
         expect(json['name']).to eq('First Game')
+        expect(json['usernames']).to eq(['user1', 'user2'])
       end
 
       it 'returns status code 201' do

@@ -3,8 +3,14 @@ module GameManager extend self
 
   def add_roll(roll_params)
     ActiveRecord::Base.transaction do
-      roll = Roll.create!(roll_params)
-      rolls = Roll.where(game_id: roll_params['game_id'], username: roll_params['username']).order(created_at: :asc)
+      game_id = roll_params['game_id']
+      username = roll_params['username']
+
+      game = Game.find(game_id)
+      raise ActiveRecord::RecordInvalid unless game.usernames.include?(username)
+
+      roll = game.rolls.create!(roll_params)
+      rolls = game.rolls.where(username: username).order(created_at: :asc)
       raise ActiveRecord::RecordInvalid unless follow_rules?(rolls)
       return roll
     end

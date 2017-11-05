@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe GameManager, type: :model do
-  let!(:game) { create(:game) }
+  let!(:game) { create(:game, usernames: ['username', 'other_user'].to_json) }
   let(:username) { 'username' }
 
   def add_roll(score)
@@ -16,6 +16,14 @@ RSpec.describe GameManager, type: :model do
     context 'when roll params are valid' do
       it 'returns a roll' do
         expect(add_roll(5).score).to eq(5)
+      end
+    end
+
+    context 'when username is no valid' do
+      it 'returns status code 422' do
+        expect {
+          GameManager.add_roll({ 'game_id' => game.id, 'score' => 5, 'username' => 'invalid username' })
+        }.to raise_error(ActiveRecord::RecordInvalid)
       end
     end
 

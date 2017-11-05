@@ -10,13 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171104235328) do
+ActiveRecord::Schema.define(version: 20171105162624) do
 
-  create_table "games", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
+# Could not dump table "games" because of following StandardError
+#   Unknown type 'json' for column 'usernames'
 
   create_table "rolls", force: :cascade do |t|
     t.string "username"

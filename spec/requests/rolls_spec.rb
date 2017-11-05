@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Rolls API' do
   let!(:game) { create(:game) }
-  let(:username) { "username" }
+  let(:username) { 'username' }
   let!(:rolls) { create_list(:roll, 10, game_id: game.id, username: username, score: 0) }
 
   let(:game_id) { game.id }
@@ -75,15 +75,15 @@ RSpec.describe 'Rolls API' do
       end
     end
 
-    context 'when parans are not valid' do
-      let(:params) { {} }
+    context 'when params are not valid' do
+      let(:params) { { username: username } }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
       end
 
       it 'returns a validation failure message' do
-        expect(response.body).to match(/Validation failed: Username can't be blank, Score can't be blank/)
+        expect(response.body).to match(/Validation failed: Score can't be blank/)
       end
     end
   end
