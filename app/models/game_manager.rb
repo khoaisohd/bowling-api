@@ -42,6 +42,7 @@ module GameManager extend self
     }
 
     i = 0
+
     while i < rolls.size do
       frame = {
         rolls: [rolls[i]]
@@ -69,6 +70,8 @@ module GameManager extend self
       frame[:rolls].compact!
       result[:score] += frame[:score]
     end
+
+    result[:completed] = i == rolls.size && is_last_frame
 
     return result
   end
