@@ -5,11 +5,12 @@ module GameManager extend self
     ActiveRecord::Base.transaction do
       game_id = roll_params['game_id']
       username = roll_params['username']
+
       game = Game.find(game_id)
       raise ActiveRecord::RecordInvalid unless game.usernames.include?(username)
 
       roll = Roll.create!(roll_params)
-      rolls = Roll.where(game_id: game_id, username: username).order(created_at: :asc)
+      rolls = game.rolls.where(username: username).order(created_at: :asc)
       raise ActiveRecord::RecordInvalid unless follow_rules?(rolls)
       return roll
     end
