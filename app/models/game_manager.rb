@@ -9,7 +9,7 @@ module GameManager extend self
       game = Game.find(game_id)
       raise ActiveRecord::RecordInvalid unless game.usernames.include?(username)
 
-      roll = Roll.create!(roll_params)
+      roll = game.rolls.create!(roll_params)
       rolls = game.rolls.where(username: username).order(created_at: :asc)
       raise ActiveRecord::RecordInvalid unless follow_rules?(rolls)
       return roll
