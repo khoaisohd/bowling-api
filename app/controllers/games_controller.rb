@@ -2,21 +2,17 @@ class GamesController < ApplicationController
   before_action :set_game, only: [:show, :update, :destroy]
 
   def index
-    @games = Game.all
+    @games = Game.all.map { |game| game_response(game) }
     json_response(@games)
   end
 
   def show
-    json_response(
-      id: @game.id,
-      name: @game.name,
-      results: GameManager.compute_results(@game)
-    )
+    json_response(game_response(@game))
   end
 
   def create
     @game = Game.create!(game_params)
-    json_response(@game, :created)
+    json_response(game_response(@game), :created)
   end
 
   def update
@@ -36,6 +32,19 @@ class GamesController < ApplicationController
   end
 
   def game_params
-    params.permit(:name)
+    {
+      name: params[:name],
+      usernames: (params[:usernames] || []).to_json
+    }
   end
+
+  def game_response(game)
+    {
+      id: game.id,
+      name: game.name,
+      usernames: game.usernames,
+      results: GameManager.compute_results(game)
+    }
+  end
+
 end
